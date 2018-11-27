@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.4 )
-project( PinewoodDerbyCarModeler )
+project( MccPinewood )
 
 FIND_PACKAGE( Qt5Widgets )
 FIND_PACKAGE( Qt5Gui )
@@ -25,14 +25,14 @@ SET( MYSOURCE
     mainwindow/mainwindow.cpp
     mainwindow/mainwindow.h
     mainwindow/mainwindowform.ui
-    osgwidgets/osgwidget.h
-    osgwidgets/osgwidget.cpp
-    osgwidgets/osgwidgetTop.h
-    osgwidgets/osgwidgetTop.cpp
-    osgwidgets/osgwidgetside.h
-    osgwidgets/osgwidgetside.cpp
-    osgwidgets/osgwidgetfront.h
-    osgwidgets/osgwidgetfront.cpp
+    osgwidget.h
+    osgwidget.cpp
+    osgwidgetTop.h
+    osgwidgetTop.cpp
+    osgwidgetside.h
+    osgwidgetside.cpp
+    osgwidgetfront.h
+    osgwidgetfront.cpp
     outputwindow/outputwindow.h
     outputwindow/outputwindow.cpp
     outputwindow/outputwindow.ui

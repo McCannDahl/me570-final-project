@@ -1,7 +1,14 @@
-#include "OSGWidgetSide.h"
-#include "outputwindow/outputwindow.h"
-#include "osgwidget.h"
+#ifndef OSGWALL_H
+#define OSGWALL_H
 
+#include "../libs/mccphysicslib/physicsbox.h"
+
+#include <osg/ref_ptr>
+#include <osgViewer/GraphicsWindow>
+#include <osgViewer/CompositeViewer>
+#include <osgGA/TrackballManipulator>
+#include <osgText/Text>
+#include <osg/ShapeDrawable>
 #include <osg/Camera>
 #include <osg/DisplaySettings>
 #include <osg/Geode>
@@ -20,23 +27,15 @@
 #include <osg/Geometry>
 #include <osg/PositionAttitudeTransform>
 #include <osg/Node>
-#include <QVector4D>
 #include <osgParticle/FireEffect>
 #include <cassert>
 #include <vector>
-#include <QKeyEvent>
-#include <QPainter>
-#include <QWheelEvent>
-#include <valarray>
 
-OSGWidgetSide::OSGWidgetSide( MainWindow* parent, Qt::WindowFlags flags, OutputWindow* outputWindow):
-    OSGWidget{ parent, flags, outputWindow }
+class osgBox: public osg::PositionAttitudeTransform, public PhysicsBox
 {
-    camera->setViewMatrixAsLookAt(osg::Vec3d(0.0,1600,0.0),osg::Vec3d(0,0,0),osg::Vec3d(-1,0,0));
-    mView->setCameraManipulator( nullptr );
-}
+public:
+    osgBox();
+    ~osgBox(){};
+};
 
-OSGWidgetSide::~OSGWidgetSide()
-{
-
-}
+#endif

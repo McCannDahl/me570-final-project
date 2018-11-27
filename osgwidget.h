@@ -18,7 +18,7 @@ class OSGWidget : public QOpenGLWidget
   Q_OBJECT
 
 public:
-  OSGWidget( MainWindow* parent = nullptr, Qt::WindowFlags f = 0, OutputWindow* outputWindow = nullptr);
+  OSGWidget( MainWindow* parent = nullptr, Qt::WindowFlags f = 0, OutputWindow* outputWindow = nullptr, osg::PositionAttitudeTransform* frame = nullptr, osg::PositionAttitudeTransform* knife = nullptr, osg::Vec3Array* knifeV = nullptr,bool drawWheels = true);
   virtual ~OSGWidget();
   void set_up_window();
   void set_up_binary_tree();
@@ -30,6 +30,9 @@ public:
   void set_up_viewer();
   void go_home();
   void set_up_widget();
+  osg::PositionAttitudeTransform* frame;
+  osg::PositionAttitudeTransform* knife;
+  osg::Vec3Array* knifeV;
   void paintEvent( QPaintEvent* paintEvent );
   void paintGL();
   void resizeGL( int width, int height );
@@ -58,7 +61,13 @@ public:
   OutputWindow* outputWindow;
   osg::Camera* camera;
   osg::ref_ptr<osgGA::TrackballManipulator> manipulator;
+  void redraw_block();
   MainWindow* mainWindow;
+  osg::PositionAttitudeTransform *create_wheels(osg::Vec3 StartPoint, osg::Vec3 EndPoint);
+  virtual void add_wheels();
+  bool drawWheels{true};
+  void flipView();
+  void flipCamera();
 };
 
 #endif

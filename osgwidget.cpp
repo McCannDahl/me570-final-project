@@ -28,13 +28,17 @@
 #include <QPainter>
 #include <QWheelEvent>
 
-OSGWidget::OSGWidget( MainWindow* parent, Qt::WindowFlags flags, OutputWindow* outputWindow  ):
+OSGWidget::OSGWidget( MainWindow* parent, Qt::WindowFlags flags, OutputWindow* outputWindow, osg::PositionAttitudeTransform* frame,osg::PositionAttitudeTransform* knife, osg::Vec3Array* knifeV, bool drawWheels  ):
     QOpenGLWidget{ parent,flags },
     mGraphicsWindow{ new osgViewer::GraphicsWindowEmbedded{ this->x(),this->y(),this->width(),this->height() } },
     mViewer{ new osgViewer::CompositeViewer }
 {
     this->mainWindow = parent;
     this->outputWindow = outputWindow;
+    this->frame = frame;
+    this->knife = knife;
+    this->knifeV = knifeV;
+    this->drawWheels = drawWheels;
     set_up_window();
     set_up_widget();
 }
@@ -65,6 +69,10 @@ void OSGWidget::set_up_window()
 
     set_up_viewer();
     go_home();
+    rootNode->addChild(frame);
+    rootNode->addChild(knife);
+
+    add_wheels();
 }
 
 void OSGWidget::set_up_binary_tree()
@@ -93,6 +101,7 @@ void OSGWidget::set_up_camera()
 void OSGWidget::set_up_manipulator()
 {
     manipulator = new osgGA::TrackballManipulator;
+    //manipulator->setAllowThrow( false );
     manipulator->setHomePosition(osg::Vec3d(-500.0,500.0,-1600.0),osg::Vec3d(0,0,0),osg::Vec3d(-1,0,0));
     mView->setCameraManipulator( manipulator );
 }
@@ -173,6 +182,7 @@ void OSGWidget::mouseMoveEvent( QMouseEvent* event )
 {
 
     auto pixelRatio = this->devicePixelRatio();
+    //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
 
     this->getEventQueue()->mouseMotion( static_cast<float>( event->x() * pixelRatio ), static_cast<float>( event->y() * pixelRatio ) );
 }
@@ -185,6 +195,7 @@ void OSGWidget::mousePressEvent( QMouseEvent* event )
     {
     case Qt::LeftButton:
         button = 1;
+        //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
         break;
 
     case Qt::MiddleButton:
@@ -212,6 +223,11 @@ void OSGWidget::mouseReleaseEvent(QMouseEvent* event)
     {
     case Qt::LeftButton:
         button = 1;
+        //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
+        (*knifeV)[0].set( 0, 0, 0 );
+        (*knifeV)[1].set( 0, 0, 0 );
+        (*knifeV)[2].set( 0, 0, 0 );
+        (*knifeV)[3].set( 0, 0, 0 );
         break;
 
     case Qt::MiddleButton:
@@ -288,3 +304,99 @@ osgGA::EventQueue* OSGWidget::getEventQueue() const
     else
         throw std::runtime_error( "Unable to obtain valid event queue");
 }
+
+void OSGWidget::redraw_block()
+{
+    mainWindow->redraw_wireframe_tetrahedron();
+}
+
+void OSGWidget::add_wheels()
+{
+    if(drawWheels)
+    {
+        osg::Vec3 StartPoint = osg::Vec3(125,175,269*2);
+        osg::Vec3 EndPoint = osg::Vec3(125,175+41.5*2,269*2);
+        rootNode->addChild(create_wheels(StartPoint,EndPoint));
+        StartPoint = osg::Vec3(125,175,-172*2);
+        EndPoint = osg::Vec3(125,175+41.5*2,-172*2);
+        rootNode->addChild(create_wheels(StartPoint,EndPoint));
+        StartPoint = osg::Vec3(125,-175,-172*2);
+        EndPoint = osg::Vec3(125,-175-41.5*2,-172*2);
+        rootNode->addChild(create_wheels(StartPoint,EndPoint));
+        StartPoint = osg::Vec3(125,-175,269*2);
+        EndPoint = osg::Vec3(125,-175-41.5*2,269*2);
+        rootNode->addChild(create_wheels(StartPoint,EndPoint));
+    }
+}
+
+osg::PositionAttitudeTransform* OSGWidget::create_wheels(osg::Vec3 StartPoint,osg::Vec3 EndPoint)
+{
+    float radius = 119;
+    osg::Vec4 CylinderColor = osg::Vec4(0.5f,0.5f,0.5f,1.f);
+
+    osg::Vec3 center;
+    float height;
+
+    osg::ref_ptr<osg::Cylinder> cylinder;
+    osg::ref_ptr<osg::ShapeDrawable> cylinderDrawable;
+    osg::ref_ptr<osg::Material> material;
+    osg::ref_ptr<osg::Geode> geode;
+
+    height = (StartPoint- EndPoint).length();
+    center = osg::Vec3( (StartPoint.x() + EndPoint.x()) / 2,  (StartPoint.y() + EndPoint.y()) / 2,  (StartPoint.z() + EndPoint.z()) / 2);
+
+    // This is the default direction for the cylinders to face in OpenGL
+    osg::Vec3   z = osg::Vec3(0,0,1);
+
+    // Get diff between two points you want cylinder along
+    osg::Vec3 p = (StartPoint - EndPoint);
+
+    // Get CROSS product (the axis of rotation)
+    osg::Vec3   t = z ^  p;
+
+    // Get angle. length is magnitude of the vector
+    double angle = acos( (z * p) / p.length());
+
+    //   Create a cylinder between the two points with the given radius
+    cylinder = new osg::Cylinder(center,radius,height);
+    cylinder->setRotation(osg::Quat(angle, osg::Vec3(t.x(), t.y(), t.z())));
+
+    //   A geode to hold our cylinder
+    geode = new osg::Geode;
+    cylinderDrawable = new osg::ShapeDrawable(cylinder);
+
+    geode->addDrawable(cylinderDrawable);
+
+    //   Set the color of the cylinder that extends between the two points.
+    material = new osg::Material;
+    material->setDiffuse( osg::Material::FRONT, CylinderColor);
+    geode->getOrCreateStateSet()->setAttributeAndModes( material, osg::StateAttribute::ON );
+    geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
+
+    //   Add the cylinder between the two points to an existing group
+    osg::PositionAttitudeTransform* transform3 = new osg::PositionAttitudeTransform;
+    transform3->addChild(geode);
+    return transform3;
+}
+
+void OSGWidget::flipView()
+{
+    osg::Vec3f eye;
+    osg::Vec3f center;
+    osg::Vec3f up;
+    camera->getViewMatrixAsLookAt(eye,center,up);
+    camera->setViewMatrixAsLookAt(-eye,center,up);
+    this->update();
+}
+
+
+void OSGWidget::flipCamera()
+{
+    osg::Vec3f eye;
+    osg::Vec3f center;
+    osg::Vec3f up;
+    camera->getViewMatrixAsLookAt(eye,center,up);
+    camera->setViewMatrixAsLookAt(eye,center,-up);
+    this->update();
+}
+
