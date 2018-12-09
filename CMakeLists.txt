@@ -55,6 +55,15 @@ set(TEST_NAME ${PROJECT_NAME}_UnitTests)
 
 add_executable(${TEST_NAME}
     unittests.cpp
+    block.cpp
+    block.h
 )
 
-target_link_libraries(${TEST_NAME} gtest gtest_main)
+target_link_libraries(${TEST_NAME}
+    gtest
+    gtest_main
+    ${OPENSCENEGRAPH_LIBRARIES}
+    Qt5::Widgets
+    Qt5::Gui
+    Qt5::PrintSupport
+)

@@ -111,6 +111,7 @@ void Block::slice(float begX,float begY,float begZ,float endX,float endY,float e
     else if(knife_option == 2)
     {
         keep_both_blocks();
+        add_new_knife_plane_to_block();
     }
     set_vertex_array();
     set_vertex_color_array();
@@ -546,6 +547,22 @@ void Block::paint_face(float begX, float begY, float begZ,float endX, float endY
         oldColorOfFaces.push_back(colorOfFaces);
         colorOfFaces[faceToPaint] =  paintBrushColor;
         set_vertex_color_array();
+    }
+}
+
+void Block::remove_face(float begX, float begY, float begZ,float endX, float endY, float endZ)
+{
+    qDebug() << "remove_face ";
+    find_intersections_between_paint_brush_and_block(begX,begY,begZ,endX,endY,endZ);
+    int faceToRemove = find_face_closest_to_user(begX, begY, begZ);
+    if(faceToRemove != -1)
+    {
+        oldColorOfFaces.push_back(colorOfFaces);
+        colorOfFaces.erase(colorOfFaces.begin()+faceToRemove);
+        set_vertex_color_array();
+        oldFaces.push_back(faces);
+        faces.erase(faces.begin()+faceToRemove);
+        set_vertex_array();
     }
 }
 

@@ -125,7 +125,13 @@ void OSGWidgetFront::mousePressEvent( QMouseEvent* event )
         camera->getViewMatrixAsLookAt(eye,center,up);
         block->paint_face(begX,begY,eye.z(),endX,endY,-eye.z());
         redraw_block();
+        outputWindow->print_string("Paint Face");
         break;
+    case Qt::MiddleButton:
+        camera->getViewMatrixAsLookAt(eye,center,up);
+        block->remove_face(begX,begY,eye.z(),endX,endY,-eye.z());
+        redraw_block();
+        outputWindow->print_string("Remove Face");
     default:
         break;
     }

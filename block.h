@@ -55,6 +55,7 @@ public:
     void find_intersections_between_paint_brush_and_block(float begX, float begY, float begZ, float endX, float endY, float endZ);
     void find_normal_vector_to_face(int faceIndex);
     void paint_face(float begX, float begY, float begZ, float endX, float endY, float endZ);
+    void remove_face(float begX, float begY, float begZ, float endX, float endY, float endZ);
     int find_face_closest_to_user(float begX, float begY, float begZ);
     void set_vertex_color_array();
     bool undo_paint();

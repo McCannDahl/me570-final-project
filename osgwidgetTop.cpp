@@ -120,10 +120,16 @@ void OSGWidgetTop::mousePressEvent( QMouseEvent* event )
         //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
         break;
     case Qt::RightButton:
-        outputWindow->print_string("Paint");
         camera->getViewMatrixAsLookAt(eye,center,up);
         block->paint_face(eye.x(),begY,begZ,-eye.x(),endY,begZ);
         redraw_block();
+        outputWindow->print_string("Paint Face");
+        break;
+    case Qt::MiddleButton:
+        camera->getViewMatrixAsLookAt(eye,center,up);
+        block->remove_face(eye.x(),begY,begZ,-eye.x(),endY,begZ);
+        redraw_block();
+        outputWindow->print_string("Remove Face");
         break;
     default:
         break;

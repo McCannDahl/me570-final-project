@@ -41,6 +41,11 @@ void MainWindow::add_output_window()
     this->addDockWidget(Qt::RightDockWidgetArea,outputWindowWidget);
     outputWindow = new OutputWindow(this);
     outputWindowWidget->setWidget(outputWindow);
+    outputWindow->print_string("Welcome!");
+    outputWindow->print_string("Use the left mouse button to slice the block on the three othograaphic views.");
+    outputWindow->print_string("Use the middle mouse button to remove faces.");
+    outputWindow->print_string("Use the right mouse button to paint faces.");
+    outputWindow->print_string("Have Fun!");
 }
 
 void MainWindow::add_osg_window()
@@ -169,7 +174,12 @@ void MainWindow::on_actionPrint_triggered()
     xscale = pixelsWidth_front/osgWidgetFront->width();
     yscale = pixelsHeight_front/osgWidgetFront->height();
     painter.scale(xscale, yscale);
+    //osgWidgetFront->flipView();
+    //osgWidgetFront->flipCamera();
+    redraw_wireframe_tetrahedron();
     osgWidgetFront->render(&painter);
+    //osgWidgetFront->flipView();
+    //osgWidgetFront->flipCamera();
     painter.resetTransform();
 
     space += 4;
