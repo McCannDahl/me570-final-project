@@ -8,6 +8,11 @@ void OutputWindow::print_string(QString s)
     ui->mOutputText->appendPlainText(s);
 }
 
+void OutputWindow::clear_output()
+{
+    ui->mOutputText->clear();
+}
+
 void OutputWindow::on_radioButton_clicked()
 {
     mainWindow->change_kife(1);

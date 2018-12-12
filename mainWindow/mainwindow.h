@@ -40,6 +40,7 @@ public:
     void undo_paint();
     Block* block;
     QString fileName{""};
+    void on_actionNew_triggered();
 public slots:
     void on_actionExit_triggered();
     void on_actionPrint_triggered();

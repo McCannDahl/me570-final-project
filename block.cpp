@@ -704,3 +704,76 @@ bool Block::undo_paint()
         }
     }
 }
+
+void Block::reset()
+{
+    oldColorOfFaces.clear();
+    oldFaces.clear();
+
+    paintBrushColor = osg::Vec4( 1.0f, 0.8f, 0.2f, 1.f );
+
+    vertices.clear();
+    vertices.push_back(osg::Vec3d( 125, 175, 700));
+    vertices.push_back(osg::Vec3d(-125, 175, 700));
+    vertices.push_back(osg::Vec3d(-125,-175, 700));
+    vertices.push_back(osg::Vec3d( 125,-175, 700));
+    vertices.push_back(osg::Vec3d( 125,-175,-700));
+    vertices.push_back(osg::Vec3d(-125,-175,-700));
+    vertices.push_back(osg::Vec3d(-125, 175,-700));
+    vertices.push_back(osg::Vec3d( 125, 175,-700));
+
+    std::vector<osg::Vec3d> face;
+
+    face.clear();
+    face.push_back(vertices[0]);
+    face.push_back(vertices[1]);
+    face.push_back(vertices[2]);
+    face.push_back(vertices[3]);
+    faces.push_back(face);
+    colorOfFaces.push_back(paintBrushColor);
+
+
+    face.clear();
+    face.push_back(vertices[4]);
+    face.push_back(vertices[5]);
+    face.push_back(vertices[6]);
+    face.push_back(vertices[7]);
+    faces.push_back(face);
+    colorOfFaces.push_back(paintBrushColor);
+
+    face.clear();
+    face.push_back(vertices[0]);
+    face.push_back(vertices[1]);
+    face.push_back(vertices[6]);
+    face.push_back(vertices[7]);
+    faces.push_back(face);
+    colorOfFaces.push_back(paintBrushColor);
+
+    face.clear();
+    face.push_back(vertices[2]);
+    face.push_back(vertices[3]);
+    face.push_back(vertices[4]);
+    face.push_back(vertices[5]);
+    faces.push_back(face);
+    colorOfFaces.push_back(paintBrushColor);
+
+    face.clear();
+    face.push_back(vertices[0]);
+    face.push_back(vertices[3]);
+    face.push_back(vertices[4]);
+    face.push_back(vertices[7]);
+    faces.push_back(face);
+    colorOfFaces.push_back(paintBrushColor);
+
+    face.clear();
+    face.push_back(vertices[1]);
+    face.push_back(vertices[2]);
+    face.push_back(vertices[5]);
+    face.push_back(vertices[6]);
+    faces.push_back(face);
+    colorOfFaces.push_back(paintBrushColor);
+
+
+    set_vertex_array();
+    set_vertex_color_array();
+}

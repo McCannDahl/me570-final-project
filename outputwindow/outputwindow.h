@@ -15,6 +15,7 @@ class OutputWindow : public QWidget
 public:
     explicit OutputWindow(MainWindow *parent = 0);
     ~OutputWindow();
+    void clear_output();
 public slots:
     void print_string(QString s);
     void on_radioButton_clicked();

@@ -61,6 +61,7 @@ public:
     bool undo_paint();
     void put_intersections_in_order_R(std::vector<osg::Vec3d> availablePoints, std::vector<osg::Vec3d> unavailablePoints);
     void find_normal_vector_to_face(std::vector<osg::Vec3d> faceIndexes);
+    void reset();
 };
 
-#endif // BLOCK_H
+#endif

@@ -41,11 +41,13 @@ void MainWindow::add_output_window()
     this->addDockWidget(Qt::RightDockWidgetArea,outputWindowWidget);
     outputWindow = new OutputWindow(this);
     outputWindowWidget->setWidget(outputWindow);
+    outputWindow->print_string("******************************");
     outputWindow->print_string("Welcome!");
     outputWindow->print_string("Use the left mouse button to slice the block on the three othograaphic views.");
     outputWindow->print_string("Use the middle mouse button to remove faces.");
     outputWindow->print_string("Use the right mouse button to paint faces.");
     outputWindow->print_string("Have Fun!");
+    outputWindow->print_string("******************************");
 }
 
 void MainWindow::add_osg_window()
@@ -73,6 +75,13 @@ void MainWindow::add_osg_window()
 void MainWindow::on_actionExit_triggered()
 {
     QApplication::quit();
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    outputWindow->clear_output();
+    outputWindow->print_string("New block");
+    block->reset();
 }
 
 void MainWindow::on_actionPrint_triggered()
