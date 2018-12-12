@@ -163,6 +163,13 @@
    <item>
     <widget class="QPlainTextEdit" name="mOutputText"/>
    </item>
+   <item>
+    <widget class="QPushButton" name="pushButton_7">
+     <property name="text">
+      <string>Clear Output</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

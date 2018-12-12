@@ -65,6 +65,11 @@ void OutputWindow::on_pushButton_6_clicked()
     mainWindow->undo_paint();
 }
 
+void OutputWindow::on_pushButton_7_clicked()
+{
+    clear_output();
+}
+
 OutputWindow::OutputWindow(MainWindow *parent) :
     QWidget(parent),
     ui(new Ui::OutputWindow)

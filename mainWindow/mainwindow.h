@@ -40,13 +40,13 @@ public:
     void undo_paint();
     Block* block;
     QString fileName{""};
-    void on_actionNew_triggered();
 public slots:
     void on_actionExit_triggered();
     void on_actionPrint_triggered();
     void on_actionSave_as_triggered();
     void on_actionOpen_3_triggered();
     void on_actionSave_3_triggered();
+    void on_actionNew_triggered();
 private:
     Ui::MainWindowForm *mainWindowUI;
     QDockWidget* outputWindowWidget;

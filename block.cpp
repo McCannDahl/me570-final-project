@@ -709,6 +709,8 @@ void Block::reset()
 {
     oldColorOfFaces.clear();
     oldFaces.clear();
+    colorOfFaces.clear();
+    faces.clear();
 
     paintBrushColor = osg::Vec4( 1.0f, 0.8f, 0.2f, 1.f );
 
