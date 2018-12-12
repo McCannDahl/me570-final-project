@@ -119,7 +119,6 @@ void OSGWidgetFront::mousePressEvent( QMouseEvent* event )
 
         begX = mouseY;
         mouseDown = true;
-        //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
         break;
     case Qt::RightButton:
         camera->getViewMatrixAsLookAt(eye,center,up);
@@ -132,6 +131,7 @@ void OSGWidgetFront::mousePressEvent( QMouseEvent* event )
         block->remove_face(begX,begY,eye.z(),endX,endY,-eye.z());
         redraw_block();
         outputWindow->print_string("Remove Face");
+        break;
     default:
         break;
     }
@@ -147,7 +147,6 @@ void OSGWidgetFront::mouseReleaseEvent(QMouseEvent* event)
         button = 1;
         mouseDown = false;
         block->slice(begX,begY,begZ,endX,endY,endZ);
-        //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
         redraw_block();
         break;
     default:
@@ -169,7 +168,6 @@ void OSGWidgetFront::create_wireframe_knife()
     (*knifeV)[1].set( begX, begY, 700 );
     (*knifeV)[2].set( endX, endY, 700 );
     (*knifeV)[3].set( endX, endY,-700 );
-    //this->update();
 }
 
 

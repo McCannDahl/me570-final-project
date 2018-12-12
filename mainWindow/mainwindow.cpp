@@ -2,7 +2,7 @@
 #include "ui_mainwindowform.h"
 #include <osg/PositionAttitudeTransform>
 #include "../osgwidget.h"
-#include "osgwidgetTop.h"
+#include "osgwidgettop.h"
 #include "osgwidgetfront.h"
 #include "osgwidgetside.h"
 #include "../outputwindow/outputwindow.h"
@@ -61,11 +61,10 @@ void MainWindow::add_osg_window()
 
     QWidget *centralWidget = new QWidget;
     QGridLayout *mainLayout = new QGridLayout;
-    //mainLayout->setSizeConstraint(QLayout::SetFixedSize);
-    mainLayout->addWidget(osgWidget, 0, 0, 6, 6);//y,x,height,width
-    mainLayout->addWidget(osgWidgetTop, 0, 6, 6, 2);//y,x,height,width
-    mainLayout->addWidget(osgWidgetSide, 6, 0, 2, 6);//y,x,height,width
-    mainLayout->addWidget(osgWidgetFront, 6, 6, 2, 2);//y,x,height,width
+    mainLayout->addWidget(osgWidget, 0, 0, 6, 6);
+    mainLayout->addWidget(osgWidgetTop, 0, 6, 6, 2);
+    mainLayout->addWidget(osgWidgetSide, 6, 0, 2, 6);
+    mainLayout->addWidget(osgWidgetFront, 6, 6, 2, 2);
     centralWidget->setLayout(mainLayout);
 
     this->setCentralWidget(centralWidget);
@@ -126,22 +125,9 @@ void MainWindow::on_actionPrint_triggered()
     double scale;
     double space{0};
 
-    qDebug() << "Paper width = " << printer.paperRect().width();//around 1224
-    qDebug() << "Paper height = " << printer.paperRect().height();//around
- /*   qDebug() << "Paper x = " << printer.paperRect().x();//around
-    qDebug() << "Paper y = " << printer.paperRect().y();//around
+    qDebug() << "Paper width = " << printer.paperRect().width();
+    qDebug() << "Paper height = " << printer.paperRect().height();
 
-    qDebug() << "Page width = " << printer.pageRect().width();//around 1172
-    qDebug() << "Page height = " << printer.pageRect().height();//around 1534
-    qDebug() << "Page x = " << printer.pageRect().x();//around
-    qDebug() << "Page y = " << printer.pageRect().y();//around
-
-    qDebug() << "osgWidget width = " << osgWidget->width();
-    qDebug() << "osgWidget height = " << osgWidget->height();
-
-    qDebug() << "mainWindow width = " << width();
-    qDebug() << "mainWindow height = " << height();
-*/
     space += 4;
     painter.translate(space,0);
     painter.translate(printer.pageRect().x(),printer.pageRect().y());
@@ -186,12 +172,8 @@ void MainWindow::on_actionPrint_triggered()
     xscale = pixelsWidth_front/osgWidgetFront->width();
     yscale = pixelsHeight_front/osgWidgetFront->height();
     painter.scale(xscale, yscale);
-    //osgWidgetFront->flipView();
-    //osgWidgetFront->flipCamera();
     redraw_wireframe_tetrahedron();
     osgWidgetFront->render(&painter);
-    //osgWidgetFront->flipView();
-    //osgWidgetFront->flipCamera();
     painter.resetTransform();
 
     space += 4;

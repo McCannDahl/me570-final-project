@@ -41,4 +41,4 @@ public:
   virtual bool event( QEvent* event );
   void create_wireframe_knife();
 };
-#endif // OSGWIDGETFRONT_H
+#endif

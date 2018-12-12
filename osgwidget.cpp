@@ -101,7 +101,6 @@ void OSGWidget::set_up_camera()
 void OSGWidget::set_up_manipulator()
 {
     manipulator = new osgGA::TrackballManipulator;
-    //manipulator->setAllowThrow( false );
     manipulator->setHomePosition(osg::Vec3d(-500.0,500.0,-1600.0),osg::Vec3d(0,0,0),osg::Vec3d(-1,0,0));
     mView->setCameraManipulator( manipulator );
 }
@@ -180,10 +179,7 @@ void OSGWidget::keyReleaseEvent( QKeyEvent* event )
 
 void OSGWidget::mouseMoveEvent( QMouseEvent* event )
 {
-
     auto pixelRatio = this->devicePixelRatio();
-    //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
-
     this->getEventQueue()->mouseMotion( static_cast<float>( event->x() * pixelRatio ), static_cast<float>( event->y() * pixelRatio ) );
 }
 
@@ -195,17 +191,13 @@ void OSGWidget::mousePressEvent( QMouseEvent* event )
     {
     case Qt::LeftButton:
         button = 1;
-        //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
         break;
-
     case Qt::MiddleButton:
         button = 2;
         break;
-
     case Qt::RightButton:
         button = 3;
         break;
-
     default:
         break;
     }
@@ -223,7 +215,6 @@ void OSGWidget::mouseReleaseEvent(QMouseEvent* event)
     {
     case Qt::LeftButton:
         button = 1;
-        //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
         (*knifeV)[0].set( 0, 0, 0 );
         (*knifeV)[1].set( 0, 0, 0 );
         (*knifeV)[2].set( 0, 0, 0 );
@@ -345,35 +336,22 @@ osg::PositionAttitudeTransform* OSGWidget::create_wheels(osg::Vec3 StartPoint,os
     height = (StartPoint- EndPoint).length();
     center = osg::Vec3( (StartPoint.x() + EndPoint.x()) / 2,  (StartPoint.y() + EndPoint.y()) / 2,  (StartPoint.z() + EndPoint.z()) / 2);
 
-    // This is the default direction for the cylinders to face in OpenGL
     osg::Vec3   z = osg::Vec3(0,0,1);
-
-    // Get diff between two points you want cylinder along
     osg::Vec3 p = (StartPoint - EndPoint);
-
-    // Get CROSS product (the axis of rotation)
     osg::Vec3   t = z ^  p;
-
-    // Get angle. length is magnitude of the vector
     double angle = acos( (z * p) / p.length());
-
-    //   Create a cylinder between the two points with the given radius
     cylinder = new osg::Cylinder(center,radius,height);
     cylinder->setRotation(osg::Quat(angle, osg::Vec3(t.x(), t.y(), t.z())));
-
-    //   A geode to hold our cylinder
     geode = new osg::Geode;
     cylinderDrawable = new osg::ShapeDrawable(cylinder);
 
     geode->addDrawable(cylinderDrawable);
 
-    //   Set the color of the cylinder that extends between the two points.
     material = new osg::Material;
     material->setDiffuse( osg::Material::FRONT, CylinderColor);
     geode->getOrCreateStateSet()->setAttributeAndModes( material, osg::StateAttribute::ON );
     geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
 
-    //   Add the cylinder between the two points to an existing group
     osg::PositionAttitudeTransform* transform3 = new osg::PositionAttitudeTransform;
     transform3->addChild(geode);
     return transform3;

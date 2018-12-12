@@ -1,4 +1,4 @@
-#include "OSGWidgetTop.h"
+#include "OSGWidgettop.h"
 #include "outputwindow/outputwindow.h"
 #include "osgwidget.h"
 
@@ -117,7 +117,6 @@ void OSGWidgetTop::mousePressEvent( QMouseEvent* event )
 
         begZ = -mouseY;
         mouseDown = true;
-        //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
         break;
     case Qt::RightButton:
         camera->getViewMatrixAsLookAt(eye,center,up);
@@ -146,7 +145,6 @@ void OSGWidgetTop::mouseReleaseEvent(QMouseEvent* event)
         button = 1;
         mouseDown = false;
         block->slice(begX,begY,begZ,endX,endY,endZ);
-        //outputWindow->print_string( QString::number(event->pos().x())+" "+ QString::number(event->pos().y()));
         redraw_block();
         break;
     default:
@@ -168,5 +166,4 @@ void OSGWidgetTop::create_wireframe_knife()
     (*knifeV)[1].set( 125, begY, begZ );
     (*knifeV)[2].set( 125, endY, endZ );
     (*knifeV)[3].set(-125, endY, endZ );
-    //this->update();
 }

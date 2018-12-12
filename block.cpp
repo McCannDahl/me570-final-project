@@ -214,7 +214,6 @@ void Block::keep_biggest_block()
     {
         for(int j=0;j<newFacesAbove[i].size();j++)
         {
-            //qDebug() << "newFacesAbove " << newFacesAbove[i][j].x() << " " << newFacesAbove[i][j].y() << " " << newFacesAbove[i][j].z() << " ";
             if(j==newFacesAbove[i].size()-1)
             {
                 abovePerimeter += (newFacesAbove[i][j]-newFacesAbove[i][0]).length();
@@ -495,8 +494,6 @@ void Block::set_vertex_array()
             v->resize(faces[i].size());
             for(int j=0;j<faces[i].size();j++)
             {
-                //qDebug() << "vertexArray i="<< i << faces[i][j].x() << " " << faces[i][j].y() << " " << faces[i][j].z() << " ";
-
                 (*v)[j].set(faces[i][j].x(),faces[i][j].y(),faces[i][j].z());
             }
             vertexArray.push_back(v);

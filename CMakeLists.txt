@@ -27,8 +27,8 @@ SET( MYSOURCE
     mainwindow/mainwindowform.ui
     osgwidget.h
     osgwidget.cpp
-    osgwidgetTop.h
-    osgwidgetTop.cpp
+    osgwidgettop.h
+    osgwidgettop.cpp
     osgwidgetside.h
     osgwidgetside.cpp
     osgwidgetfront.h

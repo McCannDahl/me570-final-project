@@ -42,4 +42,4 @@ public:
   void create_wireframe_knife();
 };
 
-#endif // OSGWIDGETSIDE_H
+#endif
